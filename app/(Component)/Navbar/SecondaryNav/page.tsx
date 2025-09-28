@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import navimage from "../../../(assets)/images/Navimage.png";
 import Container from "../../Container/page";
 import CustomButton from "../../Button/page";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
 import {
     FaCode,
     FaMobileAlt,
@@ -29,6 +29,8 @@ function SecondaryNav() {
     const pathname = usePathname();
     const [open, setOpen] = useState(false);
     const [sidebar, setSidebar] = useState(false);
+    const [servicesDrawer, setServicesDrawer] = useState(false);
+
 
     const navLinks = [
         { label: "Home", path: "/" },
@@ -327,35 +329,17 @@ function SecondaryNav() {
             </Container>
 
             {/* Sidebar Drawer */}
-            <Drawer anchor="left" open={sidebar} onClose={() => setSidebar(false)}>
-                <Box
-                    sx={{
-                        width: 280,
-                        p: 2,
-                        display: "flex",
-                        flexDirection: "column",
-                        height: "100%",
-                    }}
-                >
+            <Drawer anchor="left" sx={{
+                "& .MuiDrawer-paper": {
+                    width: "100%",  // 🔹 fullscreen cover
+                    maxWidth: "100%",
+                },
+            }} open={sidebar} onClose={() => setSidebar(false)}>
+                <Box sx={{ width: "100%", p: 2, display: "flex", flexDirection: "column", height: "100%" }}>
                     {/* Header with logo & close */}
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            mb: 3,
-                        }}
-                    >
+                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
                         <Box sx={{ width: 160, height: 80 }}>
-                            <Image
-                                src={navimage}
-                                alt="Atech Sight Logo"
-                                style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    objectFit: "contain",
-                                }}
-                            />
+                            <Image src={navimage} alt="Atech Sight Logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                         </Box>
                         <IconButton onClick={() => setSidebar(false)}>
                             <IoMdClose size={28} />
@@ -364,23 +348,80 @@ function SecondaryNav() {
 
                     {/* NavLinks */}
                     <List>
-                        {navLinks.map((link) => (
-                            <ListItem
-                                key={link.path}
-                                sx={{
-                                    py: 1,
-                                    fontSize: "18px",
-                                    color:
-                                        pathname === link.path ? "#112c71" : "#3a3737",
-                                }}
-                                onClick={() => setSidebar(false)}
-                            >
-                                <Link href={link.path}>{link.label}</Link>
-                            </ListItem>
-                        ))}
+                        {navLinks.map((link) =>
+                            link.hasDropdown ? (
+                                <ListItem
+                                    key={link.path}
+                                    sx={{ py: 1, fontSize: "18px", color: pathname === link.path ? "#112c71" : "#3a3737", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}
+                                    onClick={() => {
+                                        setSidebar(false);
+                                        setServicesDrawer(true);
+                                    }}
+                                >
+                                    <span>{link.label}</span>
+                                    <IoIosArrowDown />
+                                </ListItem>
+                            ) : (
+                                <ListItem
+                                    key={link.path}
+                                    sx={{ py: 1, fontSize: "18px", color: pathname === link.path ? "#112c71" : "#3a3737" }}
+                                    onClick={() => setSidebar(false)}
+                                >
+                                    <Link href={link.path}>{link.label}</Link>
+                                </ListItem>
+                            )
+                        )}
                     </List>
                 </Box>
             </Drawer>
+            {/* Services Drawer */}
+            <Drawer anchor="left" sx={{
+                "& .MuiDrawer-paper": {
+                    width: "100%",  // 🔹 fullscreen cover
+                    maxWidth: "100%",
+                },
+            }} open={servicesDrawer} onClose={() => setServicesDrawer(false)}>
+                <Box sx={{ width: "100%", p: 2, display: "flex", flexDirection: "column", height: "100%" }}>
+                    {/* Header with back */}
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                        <IconButton onClick={() => { setServicesDrawer(false); setSidebar(true); }}>
+                            <IoIosArrowBack size={24} /> {/* yahan Back arrow bhi use kar sakte ho IoIosArrowBack */}
+                        </IconButton>
+                        <Typography sx={{ ml: 1, fontWeight: 600 }}> Our Services</Typography>
+                    </Box>
+
+                    {/* Mega Menu items mobile view */}
+                    <List>
+                        <Typography fontWeight={600} sx={{ mt: 1 }}>Web Development</Typography>
+                        <MenuItem icon={<FaCode />} text="Software Development" />
+                        <MenuItem icon={<FaSitemap />} text="SaaS Development" />
+                        <MenuItem icon={<FaCode />} text="Product Development" />
+                        <MenuItem icon={<FaCode />} text="Custom CRM Development" />
+
+                        <Typography fontWeight={600} sx={{ mt: 2 }}>UI/UX Design</Typography>
+                        <MenuItem icon={<FaPencilRuler />} text="Web Design" />
+                        <MenuItem icon={<FaMobileAlt />} text="Mobile App Design" />
+                        <MenuItem icon={<FaSitemap />} text="Wireframing & Prototyping" />
+                        <MenuItem icon={<FaSitemap />} text="User Journey Mapping" />
+
+                        <Typography fontWeight={600} sx={{ mt: 2 }}>CMS Development</Typography>
+                        <MenuItem icon={<FaWordpress />} text="WordPress" />
+                        <MenuItem icon={<FaShopify />} text="Shopify" />
+                        <MenuItem icon={<SiWebflow />} text="Webflow" />
+
+                        <Typography fontWeight={600} sx={{ mt: 2 }}>Digital Marketing</Typography>
+                        <MenuItem icon={<FaSearch />} text="SEO" />
+
+                        <Typography fontWeight={600} sx={{ mt: 2 }}>Graphic Design</Typography>
+                        <MenuItem icon={<FaPaintBrush />} text="Logo Design" />
+                        <MenuItem icon={<FaPaintBrush />} text="Illustration" />
+
+                        <Typography fontWeight={600} sx={{ mt: 2 }}>Quality Assurance</Typography>
+                        <MenuItem icon={<FaCheckSquare />} text="Software Testing" />
+                    </List>
+                </Box>
+            </Drawer>
+
         </Box>
     );
 }
