@@ -1,5 +1,6 @@
 import Banner from "./(Component)/Banner/page";
 import Navbar from "./(Component)/Navbar/page";
+import Clients from "./(Component)/Trustee/page";
 
 
 export default function Home() {
@@ -14,6 +15,8 @@ export default function Home() {
           secondary: { text: 'Portfolio', href: '/portfolio' },
         }}
         trustedBy="Trusted by 500+ Companies" />
+
+      <Clients/>
     </div>
   );
 }
