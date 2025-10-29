@@ -92,11 +92,34 @@ function SecondaryNav() {
                     {/* Navigation Links (Desktop) */}
                     <List
                         sx={{
-                            display: { xs: "none", lg: "flex" },
-                            gap: "25px",
-                            fontWeight: "600",
-                            cursor: "pointer",
+                            position: "relative", // important for pseudo-element positioning
+                            width: "auto",
+                            display: "flex",
                             alignItems: "center",
+                            fontSize: "16px",
+                            fontWeight:"600",
+                            gap: "5px",
+                            color: "#3a3737",
+                            transition: "color 0.3s ease",
+                            "&:hover": { color: "#112c71" },
+                            "& a": {
+                                position: "relative",
+                                textDecoration: "none",
+                                color: "inherit",
+                                "&::after": {
+                                    content: '""',
+                                    position: "absolute",
+                                    left: 0,
+                                    bottom: -2,
+                                    width: 0,
+                                    height: "2px",
+                                    backgroundColor: "#112c71",
+                                    transition: "width 0.3s ease",
+                                },
+                                "&:hover::after": {
+                                    width: "100%",
+                                },
+                            },
                         }}
                     >
                         {navLinks.map((link) =>
@@ -112,7 +135,7 @@ function SecondaryNav() {
                                             width: "auto",
                                             display: "flex",
                                             alignItems: "center",
-                                            fontSize: "20px",
+                                            fontSize: "16px",
                                             gap: "5px",
                                             color:
                                                 pathname === link.path
@@ -286,7 +309,7 @@ function SecondaryNav() {
                                         width: "auto",
                                         display: "flex",
                                         alignItems: "center",
-                                        fontSize: "20px",
+                                        fontSize: "16px",
                                         color:
                                             pathname === link.path
                                                 ? "#112c71"
